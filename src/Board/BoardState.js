@@ -135,7 +135,7 @@ export class BoardState {
         return 'safe'
     }
 
-    getUnvisitedAdjascents(nowOn,unvstdonly){
+    getUnvisitedAdjascents(nowOn,unvstdonly,risk){
         let ret = new Set()
         if(nowOn-1>=0)if(nowOn % 10 !== 0 && this.cellProperties[nowOn-1].getIsCellSafe() && (this.getCellClass(nowOn-1)=='unvisited' || this.getCellClass(nowOn-1)=='gold' || !unvstdonly))
             ret.add(nowOn-1)
