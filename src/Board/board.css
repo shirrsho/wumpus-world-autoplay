@@ -4,6 +4,8 @@
 	align-items: center;
 	justify-content: center;
 	background-color: #93032E;
+	font-family: 'Jura', sans-serif;
+	color: white;
 }
 
 table td {
@@ -14,7 +16,7 @@ table td {
 
 .unvisited {
 	filter: opacity(70%);
-	background-color: black;
+	background-color: white;
 }
 
 .safe {
@@ -41,6 +43,7 @@ table td {
 
 .modal-win {
 	padding-top: 1%;
+	padding-bottom: 1%;
 }
 .text-win {
 	margin: 45%;

@@ -54,7 +54,7 @@ const Board = () => {
 	//let boardState = new BoardState(input)
     const [agentAddress, setAgentAddress] = useState(boardState.getInitialAgentAddress());
 	const [modalIsOpen, setIsOpen] = React.useState(false);
-
+	const [goldCount, setGoldCount] = useState(0);
 	const [prevagentAddress, setPrevAgentAddress] = useState(Array(100).fill(-1));
 	let visitedfromthisAddress = Array(100).fill(new Set())
 	let goldc = 0
@@ -88,11 +88,16 @@ const Board = () => {
 		setIsOpen(false);
 	  }
 	
+	  const countGold = () => {
+		goldc++;
+		setGoldCount(goldc);
+	  }
+
 	function chechWin(){
 		let c = 0;
 		for (let i = 0; i < input.length; i++) {
 			if(input[i]=='G') c++;
-			if(input[i]=='G') if(boardState.getCellClass(i)!='unvisited') goldc++;
+			if(input[i]=='G') if(boardState.getCellClass(i)!='unvisited') countGold();
 		}
 		if(goldc>=c) {
 			openModal();
@@ -180,7 +185,7 @@ const Board = () => {
 		return <td className={boardState.getCellClass(num)}>
                     <div>
                         {
-							num == agentAddress && (boardState.getCellClass(num) === 'safe' || boardState.getCellClass(num) === 'unvisited') ?
+							num == agentAddress && ((boardState.getCellClass(num) === 'safe' || boardState.getCellClass(num) === 'unvisited') && boardState.getAvatar(num) !== 'gold') ?
                             	<img src={agent} alt="agent" height={70} width={70}/>
 								:
 								<></>
@@ -222,10 +227,19 @@ const Board = () => {
 							<></>
 						}
 						{
-							boardState.getAvatar(num) === 'gold'?
+							num != agentAddress && boardState.getAvatar(num) === 'gold'?
 							<div>
 								<img src={gold} alt="gold" height={70} width={70}/>
 								{/* {goldAudioStart()} */}
+							</div>
+							:
+							<></>
+						}
+						{
+							num == agentAddress && (boardState.getAvatar(num) === 'gold') ?
+							<div>
+								<img src={win} alt="gold" height={70} width={70}/>
+								{goldAudioStart()}
 							</div>
 							:
 							<></>
@@ -239,6 +253,8 @@ const Board = () => {
 	return (
 		<div className='container-fluid py-3' id='main'>
 			<button className='btn mb-3'><b>Start Game</b></button>
+
+			<p className=''>Collected Golds: {goldCount}</p>
 
 			<table className="box">
 				<tbody>
