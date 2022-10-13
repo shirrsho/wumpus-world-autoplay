@@ -12,6 +12,7 @@ import breezeagent from '../images/breeze.png'
 import breezestench from '../images/breeze_stench.png'
 import { BoardState, CellProperty } from './BoardState';
 import Modal from 'react-modal';
+import { useAsyncError } from 'react-router-dom';
 
 
 /*
@@ -93,10 +94,10 @@ const Board = () => {
 	}
 	let unvstdonly = true;
 	let risk = false;
-	let mc = 0;
+	const [mc, setMc] = useState(0)
 	function GoAgent(){
 		console.log("11",boardState.getCellProps(0));
-		if(mc>=20) risk = true
+		// if(mc>=5) risk = true
 		let tempprev = [...prevagentAddress]
 		let unvisiteds = Array.from(boardState.getUnvisitedAdjascents(agentAddress,unvstdonly,risk))
 		unvisiteds = shuffle(unvisiteds)
@@ -106,9 +107,11 @@ const Board = () => {
 			setPrevAgentAddress(tempprev)
 			agentVisits(unvisiteds[0])
 			unvstdonly = true
+			if(risk) setMc(0)
+			risk = false;
 		}
 		else{
-			console.log("sd");
+			console.log("mc",mc);
 			//let visit = Array.from(visitedfromthisAddress[agentAddress])
 			
 			//setPrevAgentAddress(agentAddress)
@@ -120,7 +123,9 @@ const Board = () => {
 			// 	console.log("No move available");
 			// }
 			unvstdonly = false
-			mc++;
+			// let mmc = mc
+			// mmc++
+			// setMc(mmc)
 			GoAgent()
 		}
 	}
