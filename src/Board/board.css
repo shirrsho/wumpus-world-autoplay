@@ -1,0 +1,48 @@
+.container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	background-color: #93032E;
+}
+
+table td {
+	border: 1px solid grey;
+	width: 80px;
+	height: 80px;
+}
+
+.unvisited {
+	filter: opacity(30%);
+	background-color: black;
+}
+
+.safe {
+	background-color: rgb(179, 202, 145);
+}
+
+.stench {
+	background-color: rgb(86, 86, 247);
+}
+
+.breeze {
+	background-color: aquamarine;
+}
+
+.breezestench {
+	background-color: black;
+}
+
+.win {
+	margin: 10% 35%;
+	background-color: #ffffff;
+}
+
+.modal-win {
+	border-color: none;
+}
+.text-win {
+	margin: 45%;
+	margin-bottom: 10%;
+	font-size: 30px;
+}
