@@ -35,7 +35,6 @@ import { Link } from 'react-router-dom';
     - agentpit
     - agentgold
 */
-
 const Board = () => {
 
 	let input = [
@@ -50,6 +49,13 @@ const Board = () => {
 				'S','S','S','S','S','S','G','S','S','S',
 				'S','P','S','S','S','S','S','S','W','S'
 			];
+			let countG = 0;
+			for(var i=0;i<input.length;i++){
+				if(input[i]==='G'){
+					countG = countG+1;
+				}
+			}
+
 	const [boardState, setBoardState] = useState(new BoardState(input))
 	//let boardState = new BoardState(input)
     const [agentAddress, setAgentAddress] = useState(boardState.getInitialAgentAddress());
@@ -253,7 +259,7 @@ const Board = () => {
 	return (
 		<div className='container-fluid py-3' id='main'>
 			<button className='btn mb-3'><b>Start Game</b></button>
-
+			<p className=''>Available Golds: {countG}</p>
 			<p className=''>Collected Golds: {goldCount}</p>
 
 			<table className="box">
