@@ -12,6 +12,7 @@ import breezeagent from '../images/breeze.png'
 import breezestench from '../images/breeze_stench.png'
 import { BoardState, CellProperty } from './BoardState';
 import Modal from 'react-modal';
+import { Link } from 'react-router-dom';
 
 
 /*
@@ -37,11 +38,11 @@ const Board = () => {
 	let input = [
 				'A','S','P','W','S','S','S','S','P','S',
 				'S','S','S','S','S','S','S','S','S','S',
-				'S','S','W','S','S','G','S','W','S','S',
+				'S','S','W','S','S','S','S','W','S','S',
 				'S','S','S','P','S','S','S','S','S','S',
 				'S','S','W','S','G','S','S','S','S','S',
-				'S','P','S','S','S','S','P','S','S','S',
-				'S','S','S','S','S','W','S','S','G','S',
+				'S','S','S','S','S','S','P','S','S','S',
+				'S','S','S','S','S','W','S','S','S','S',
 				'S','G','S','S','S','S','S','S','S','S',
 				'S','S','S','S','S','S','G','S','S','S',
 				'S','P','S','S','S','S','S','S','W','S'
@@ -54,6 +55,27 @@ const Board = () => {
 	const [prevagentAddress, setPrevAgentAddress] = useState(Array(100).fill(-1));
 	let visitedfromthisAddress = Array(100).fill(new Set())
 	let goldc = 0
+
+	let winAudio = new Audio("/win.wav");
+	let breezeAudio = new Audio("/breeze.wav");
+	let wumpusAudio = new Audio("/wumpus.wav");
+	let goldAudio = new Audio("/gold.wav");
+
+	const winAudioStart = () => {
+		winAudio.play();
+	}
+	
+	const breezeAudioStart = () => {
+		breezeAudio.play();
+	}
+
+	const wumpusAudioStart = () => {
+		wumpusAudio.play();
+	}
+
+	const goldAudioStart = () => {
+		goldAudio.play();
+	}
 
 	function openModal() {
 		setIsOpen(true);
@@ -69,7 +91,10 @@ const Board = () => {
 			if(input[i]=='G') c++;
 			if(input[i]=='G') if(boardState.getCellClass(i)!='unvisited') goldc++;
 		}
-		if(goldc>=c) openModal();
+		if(goldc>=c) {
+			openModal();
+			winAudioStart();
+		}
 	}
 	function agentVisits(to){
 		// return new Promise(resolve => {
@@ -118,6 +143,7 @@ const Board = () => {
 			// }
 			unvstdonly = false
 			GoAgent()
+			unvstdonly=true;
 		}
 		
 	}
@@ -151,13 +177,19 @@ const Board = () => {
 						}
 						{
 							num == agentAddress && boardState.getCellClass(num) === 'stench' ?
-                            	<img src={stenchagent} alt="stenchagent" height={70} width={70}/>
+                            	<div>
+									<img src={stenchagent} alt="stenchagent" height={70} width={70}/>
+								{wumpusAudioStart()}
+								</div>
 								:
 								<></>
 						}
 						{
 							num == agentAddress && boardState.getCellClass(num) === 'breeze' ?
-                            	<img src={breezeagent} alt="breezeagent" height={70} width={70}/>
+							<div>
+								<img src={breezeagent} alt="breezeagent" height={70} width={70}/>
+								{breezeAudioStart()}
+							</div>
 								:
 								<></>
 						}
@@ -181,7 +213,10 @@ const Board = () => {
 						}
 						{
 							boardState.getAvatar(num) === 'gold'?
-							<img src={gold} alt="gold" height={70} width={70}/>
+							<div>
+								<img src={gold} alt="gold" height={70} width={70}/>
+								{/* {goldAudioStart()} */}
+							</div>
 							:
 							<></>
 						}
@@ -192,8 +227,8 @@ const Board = () => {
     var t = 0;
 
 	return (
-		<div className='container mb-3' id='main'>
-					<button className='btn mb-3'><b>Start Game</b></button>
+		<div className='container-fluid py-3' id='main'>
+			<button className='btn mb-3'><b>Start Game</b></button>
 
 			<table className="box">
 				<tbody>
@@ -325,8 +360,15 @@ const Board = () => {
         contentLabel="Example Modal"
 		className="modal-win"
       >
+		<div class="card" style={{width: "30rem", backgroundColor: "#93032E", padding: "50px", marginTop: "100px", marginLeft: "500px", border: "3px solid #E4CC37"}}>
 		<img src={win} alt='win'className='win'/><br></br>
-		<b className='text-win'>You Win!</b><br></br><br></br><br></br><br></br>
+  <div class="card-body">
+    <h5 class="card-title text-light"><b>YOU WIN!</b></h5>
+    <p class="card-text text-light">You've collected all the gold!!!</p>
+    <Link to='/'><button class="btn">Restart</button></Link>
+  </div>
+</div>
+		{/* <b className='text-win'>You Win!</b><br></br><br></br><br></br><br></br> */}
 </Modal>
 		</div>
 	);

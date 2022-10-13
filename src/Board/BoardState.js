@@ -67,6 +67,7 @@ class CellProperty {
 export class BoardState {
     constructor(input){
         this.input = input
+        this.inputcopy = input;
         this.cellProperties = Array(100)
         this.agentAddress = -1
         for (let i = 0; i < 100; i++) {
@@ -74,6 +75,7 @@ export class BoardState {
         }
         for (let i = 0; i < 100; i++) {
             if(this.input[i]==='A') this.agentAddress = i;
+            // if(this.input[i]==='G') this.input[i] = 'S'
         }
         this.agentVisits(this.agentAddress)
         this.cellProperties[this.agentAddress].setSafe()
@@ -135,13 +137,13 @@ export class BoardState {
 
     getUnvisitedAdjascents(nowOn,unvstdonly){
         let ret = new Set()
-        if(nowOn-1>=0)if(nowOn % 10 !== 0 && this.cellProperties[nowOn-1].getIsCellSafe() && (this.getCellClass(nowOn-1)=='unvisited' || !unvstdonly))
+        if(nowOn-1>=0)if(nowOn % 10 !== 0 && this.cellProperties[nowOn-1].getIsCellSafe() && (this.getCellClass(nowOn-1)=='unvisited' || this.getCellClass(nowOn-1)=='gold' || !unvstdonly))
             ret.add(nowOn-1)
-        if(nowOn+1<100)if(nowOn+1 % 10 !== 0 && this.cellProperties[nowOn+1].getIsCellSafe() && (this.getCellClass(nowOn+1)=='unvisited' || !unvstdonly))
+        if(nowOn+1<100)if(nowOn+1 % 10 !== 0 && this.cellProperties[nowOn+1].getIsCellSafe() && (this.getCellClass(nowOn+1)=='unvisited' || this.getCellClass(nowOn+1)=='gold' || !unvstdonly))
             ret.add(nowOn+1)
-        if(nowOn-10>=0)if(nowOn-10 >= 0 && this.cellProperties[nowOn-10].getIsCellSafe() && (this.getCellClass(nowOn-10)=='unvisited' || !unvstdonly))
+        if(nowOn-10>=0)if(nowOn-10 >= 0 && this.cellProperties[nowOn-10].getIsCellSafe() && (this.getCellClass(nowOn-10)=='unvisited' || this.getCellClass(nowOn-10)=='gold' || !unvstdonly))
             ret.add(nowOn-10)
-        if(nowOn+10<100)if(nowOn+10 < 100 && this.cellProperties[nowOn+10].getIsCellSafe() && (this.getCellClass(nowOn+10)=='unvisited' || !unvstdonly))
+        if(nowOn+10<100)if(nowOn+10 < 100 && this.cellProperties[nowOn+10].getIsCellSafe() && (this.getCellClass(nowOn+10)=='unvisited' || this.getCellClass(nowOn+10)=='gold' || !unvstdonly))
             ret.add(nowOn+10)
         return ret
     }
@@ -246,9 +248,9 @@ export class BoardState {
     // }
 
     getAvatar(index){
-        if(this.input[index] === 'W') return 'wumpus'
-        else if(this.input[index] === 'P') return 'pit'
-        else if(this.input[index] === 'G') return 'gold'
+        if(this.inputcopy[index] === 'W') return 'wumpus'
+        else if(this.inputcopy[index] === 'P') return 'pit'
+        else if(this.inputcopy[index] === 'G') return 'gold'
         else return 'empty'
     }
 

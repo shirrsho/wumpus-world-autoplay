@@ -1,4 +1,4 @@
-.container {
+.container-fluid {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -13,36 +13,41 @@ table td {
 }
 
 .unvisited {
-	filter: opacity(30%);
+	filter: opacity(70%);
 	background-color: black;
 }
 
 .safe {
-	background-color: rgb(179, 202, 145);
+	background-color: #3BC14A;	
 }
 
 .stench {
-	background-color: rgb(86, 86, 247);
+	background-color: #B84A62;
 }
 
 .breeze {
-	background-color: aquamarine;
+	background-color: #AC7B84;
 }
 
 .breezestench {
-	background-color: black;
+	background-color: #4C243B;
 }
 
 .win {
-	margin: 10% 35%;
-	background-color: #ffffff;
+	margin: 10% 8%;
+	width: 250px;
+	height: 250px;
 }
 
 .modal-win {
-	border-color: none;
+	padding-top: 1%;
 }
 .text-win {
 	margin: 45%;
 	margin-bottom: 10%;
 	font-size: 30px;
+}
+
+.card-text, .card-title {
+	font-family: 'Jura', sans-serif;;
 }
