@@ -133,8 +133,18 @@ export class BoardState {
         return 'safe'
     }
 
-    getUnvisitedAdjascents(nowOn,unvstdonly){
+    getUnvisitedAdjascents(nowOn,unvstdonly,risk){
         let ret = new Set()
+        if(risk){
+            if(nowOn-1>=0)if(nowOn % 10 !== 0 && (this.getCellClass(nowOn-1)=='unvisited' || !unvstdonly))
+            ret.add(nowOn-1)
+            if(nowOn+1<100)if(nowOn+1 % 10 !== 0 && (this.getCellClass(nowOn+1)=='unvisited' || !unvstdonly))
+                ret.add(nowOn+1)
+            if(nowOn-10>=0)if(nowOn-10 >= 0 && (this.getCellClass(nowOn-10)=='unvisited' || !unvstdonly))
+                ret.add(nowOn-10)
+            if(nowOn+10<100)if(nowOn+10 < 100 && (this.getCellClass(nowOn+10)=='unvisited' || !unvstdonly))
+                ret.add(nowOn+10)
+        }
         if(nowOn-1>=0)if(nowOn % 10 !== 0 && this.cellProperties[nowOn-1].getIsCellSafe() && (this.getCellClass(nowOn-1)=='unvisited' || !unvstdonly))
             ret.add(nowOn-1)
         if(nowOn+1<100)if(nowOn+1 % 10 !== 0 && this.cellProperties[nowOn+1].getIsCellSafe() && (this.getCellClass(nowOn+1)=='unvisited' || !unvstdonly))

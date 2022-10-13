@@ -92,10 +92,13 @@ const Board = () => {
 		return a;
 	}
 	let unvstdonly = true;
+	let risk = false;
+	let mc = 0;
 	function GoAgent(){
 		console.log("11",boardState.getCellProps(0));
+		if(mc>=20) risk = true
 		let tempprev = [...prevagentAddress]
-		let unvisiteds = Array.from(boardState.getUnvisitedAdjascents(agentAddress,unvstdonly))
+		let unvisiteds = Array.from(boardState.getUnvisitedAdjascents(agentAddress,unvstdonly,risk))
 		unvisiteds = shuffle(unvisiteds)
 		if(/*boardState.getCellClass(agentAddress) == 'safe' && */unvisiteds.length!=0){
 			console.log(unvisiteds[0]);
@@ -117,9 +120,9 @@ const Board = () => {
 			// 	console.log("No move available");
 			// }
 			unvstdonly = false
+			mc++;
 			GoAgent()
 		}
-		
 	}
 
 	useKeypress(['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown','Enter'], (event) => {
