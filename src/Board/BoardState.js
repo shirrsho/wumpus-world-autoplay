@@ -86,6 +86,10 @@ export class BoardState {
     cellClass = Array(this.row_count*this.col_count).fill('unvisited')
     graph = Array(this.row_count*this.col_count).fill(Array(this.row_count*this.col_count).fill(0))
 
+    changeArr(input){
+        this.inputcopy = input;
+    }
+
 
     agentVisits(nowOn){
 
@@ -250,7 +254,11 @@ export class BoardState {
     getAvatar(index){
         if(this.inputcopy[index] === 'W') return 'wumpus'
         else if(this.inputcopy[index] === 'P') return 'pit'
-        else if(this.inputcopy[index] === 'G') return 'gold'
+        else if(this.inputcopy[index] === 'G') {
+            // eslint-disable-next-line no-unused-expressions
+            // this.inputcopy[index] === 'S'
+            return 'gold'
+        }
         else return 'empty'
     }
 

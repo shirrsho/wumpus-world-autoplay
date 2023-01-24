@@ -37,14 +37,14 @@ import { Link } from 'react-router-dom';
 */
 const Board = () => {
 
-	let input = [
+	var input = [
 				'A','S','P','W','S','S','S','S','P','S',
 				'S','S','S','S','S','S','S','S','S','S',
-				'S','S','W','S','S','S','S','W','S','S',
-				'S','S','S','P','S','S','S','S','S','S',
-				'S','S','W','S','G','S','S','S','S','S',
-				'S','S','S','S','S','S','P','S','S','S',
-				'S','S','S','S','S','W','S','S','S','S',
+				'S','S','S','S','S','S','S','W','S','S',
+				'S','S','S','S','S','S','S','S','S','S',
+				'S','P','S','S','G','S','S','S','S','S',
+				'S','S','S','S','S','S','S','S','S','S',
+				'P','S','S','S','S','W','S','S','S','S',
 				'S','G','S','S','S','S','S','S','S','S',
 				'S','S','S','S','S','S','G','S','S','S',
 				'S','P','S','S','S','S','S','S','W','S'
@@ -57,6 +57,7 @@ const Board = () => {
 			}
 
 	const [boardState, setBoardState] = useState(new BoardState(input))
+	const [goldState, setGoldState] = useState(false);
 	//let boardState = new BoardState(input)
     const [agentAddress, setAgentAddress] = useState(boardState.getInitialAgentAddress());
 	const [modalIsOpen, setIsOpen] = React.useState(false);
@@ -86,6 +87,13 @@ const Board = () => {
 		goldAudio.play();
 	}
 
+	const changeGoldState = () => {
+		setGoldState(true);
+		// goldAudioStart();
+		boardState.changeArr(input);
+		setGoldState(false);
+	}
+
 	function openModal() {
 		setIsOpen(true);
 	  }
@@ -99,11 +107,21 @@ const Board = () => {
 		setGoldCount(goldc);
 	  }
 
+	  const changeSafe = (num) => {
+		input[num] = 'S';
+		changeGoldState();
+	  }
+
 	function chechWin(){
 		let c = 0;
 		for (let i = 0; i < input.length; i++) {
-			if(input[i]=='G') c++;
-			if(input[i]=='G') if(boardState.getCellClass(i)!='unvisited') countGold();
+			if(input[i]=='G') {
+				c++;
+			}
+			if(input[i]=='G') if(boardState.getCellClass(i)!='unvisited') {
+				countGold();
+				changeSafe(i);
+			}
 		}
 		if(goldc>=c) {
 			openModal();
@@ -141,6 +159,9 @@ const Board = () => {
 		unvisiteds = shuffle(unvisiteds)
 		if(/*boardState.getCellClass(agentAddress) == 'safe' && */unvisiteds.length!=0){
 			console.log(unvisiteds[0]);
+			if(boardState.getAvatar(unvisiteds[0]) === 'gold') {
+				goldAudioStart();
+			}
 			tempprev[unvisiteds[0]] = agentAddress
 			setPrevAgentAddress(tempprev)
 			agentVisits(unvisiteds[0])
@@ -216,7 +237,11 @@ const Board = () => {
 						}
 						{
 							num == agentAddress && boardState.getCellClass(num) === 'breezestench' ?
-							<img src={breezestench} alt="wumpus" height={70} width={70}/>
+							<div>
+								<img src={breezestench} alt="wumpus" height={70} width={70}/>
+								{wumpusAudioStart()}
+								{breezeAudioStart()}
+							</div>
 							:
 							<></>
 						}
@@ -396,7 +421,7 @@ const Board = () => {
 		<img src={win} alt='win'className='win'/><br></br>
   <div class="card-body">
     <h5 class="card-title text-light"><b>YOU WIN!</b></h5>
-    <p class="card-text text-light">You've collected all the gold!!!</p>
+    <p class="card-text text-light">You've collected all the golds!!!</p>
     <Link to='/'><button class="btn">Restart</button></Link>
   </div>
 </div>
